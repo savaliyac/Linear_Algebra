@@ -6,7 +6,7 @@ To compile
         gcc matrix_read.c 
 To run
         ./a.out 2 [1,0,0:0,0,1:0,0,1]
-Will give output as 3x3 unit matrix.
+Will give output as 3x3 Identity matrix.
 
 
 
