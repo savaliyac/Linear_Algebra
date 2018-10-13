@@ -10,6 +10,10 @@
 #include<assert.h>
 #include<stdbool.h>
 
+typedef struct Matrix{
+	unsigned int row;
+	unsigned int column;
+}size_of_matrix;
 
 /*
  * Parse the input from command line and creates NxN matrix
@@ -35,12 +39,12 @@ unsigned int find_length(char *, char *);
  * @returns size of input matrix
  */
 
-unsigned int find_size_of_matrix(char *);
+void find_size_of_matrix(char *, size_of_matrix *);
 
 /*
  * Display the NxN matrix on terminal
  */
-void print_matrix(int**, unsigned int);
+void print_matrix(int**, size_of_matrix *size);
 
 /*
  * main function
@@ -50,6 +54,7 @@ int main (int argc, char * argv[]){
         
 	unsigned int length =0,size=0;
 
+        size_of_matrix size_ = {0,0};
 
 	int **matrix_2D = NULL;
 	
@@ -57,29 +62,36 @@ int main (int argc, char * argv[]){
 		printf("Number of input parameter =1\n");
 		printf("Terminating execution\n");
 		return 0;
-	}
+	}	
+         
 	
-	else if (argc >=2){
-	char * stack = (char*)malloc(atoi(argv[1]));
-
-}
-          
-	  char *data = argv[2];
-	  length = strlen(argv[2]);
-
-       
-
+	char *data = argv[2];
+	length = strlen(argv[2]);
 	
-        size = find_size_of_matrix(data);
+        find_size_of_matrix(data, &size_);
 
-	matrix_2D = (int **)malloc(size * sizeof(int*));
+	printf("number of row = %d, number of column = %d\n", size_.row,size_.column);
+        
+	
+	matrix_2D = (int **)malloc((size_.row) * sizeof(int*));
 
-	for(unsigned int i=0; i<size; i++)
-		matrix_2D[i] = (int *)malloc(sizeof(int)*size);
+	for(unsigned int i=0; i<size_.row; i++)
+		matrix_2D[i] = (int *)malloc(sizeof(int)*(size_.column));
 	
 	prepare_matrix(++data,length, matrix_2D);
-        print_matrix(matrix_2D,size);
-	
+        print_matrix(matrix_2D,&size_);
+        
+
+	/*
+	 * Free up the memory
+	 */
+        /*
+	for(unsigned int i=0; i<size; i++){
+		free(matrix_2D[i]);
+	}
+
+	free(matrix_2D);
+	*/
 	return 0;
 }
 
@@ -96,7 +108,6 @@ unsigned int find_length(char *start, char *end)
 }
 unsigned int power(int base,int exponent){
     
-    //unsigned int value;
     if(base == 0)
     {
 	return 0;
@@ -173,6 +184,7 @@ void prepare_matrix(char *matrix, unsigned int length, int** matrix_2D){
 				len =find_length(matrix,temp);
 				number = convert_to_digit(temp,len);
 				matrix_2D[row][column]=number;
+				//assert(size->column == (column+1));
 				row++;
 				column=0;
 				break;
@@ -188,19 +200,22 @@ void prepare_matrix(char *matrix, unsigned int length, int** matrix_2D){
 	}
 }
 
-unsigned int find_size_of_matrix(char *start)
+void find_size_of_matrix(char *start, size_of_matrix *size)
 {
-	unsigned int size=0;
-	bool finish = true;
-	while((start = strpbrk(start, " ,:")) && finish)
+	bool column = true;
+	bool row =true;
+	while(start = strpbrk(start, " ,:"))
 	{
 	   switch(*start)
 	   {
 		case ',':
-			size++;
+		        if(column){
+			size->column++;
+			}
 			break;
 		case ':':
-		        finish=false;
+		        column=false;
+			size->row++;
 			break;
 		case ' ':
 			break;
@@ -208,15 +223,15 @@ unsigned int find_size_of_matrix(char *start)
 
 	   start++;
 	}
-
-	return (size+1);
+	++size->column;
+	++size->row;
 }
 
-void print_matrix(int ** matrix_2D, unsigned int size)
+void print_matrix(int ** matrix_2D, size_of_matrix *size)
 {
-	for(unsigned int row=0; row<size; row++)
+	for(unsigned int row=0; row<size->row; row++)
 	{
-		for(unsigned int column=0; column < size; column++)
+		for(unsigned int column=0; column < size->column; column++)
 		{
 			printf(" %d ", matrix_2D[row][column]);
 		}
