@@ -1,5 +1,5 @@
 /*
- * This program takes NxN matrix as input from the command line. 
+ * This program takes MxN matrix as input from the command line. 
  *  
  */
 
@@ -96,13 +96,11 @@ int main (int argc, char * argv[]){
 	/*
 	 * Free up the memory
 	 */
-        /*
 	for(unsigned int i=0; i<size; i++){
 		free(matrix_2D[i]);
 	}
 
 	free(matrix_2D);
-	*/
 	return 0;
 }
 
