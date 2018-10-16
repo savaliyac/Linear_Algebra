@@ -1,7 +1,8 @@
 # Linear_Algebra
 
 matrix_read.c 
-Reads MxN matrix from command line.
+1.Reads MxN matrix from command line.
+2.LU decomposition using Guasssian Elimination (Partially implemented)
 To compile
         gcc matrix_read.c 
 To run

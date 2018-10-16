@@ -50,10 +50,10 @@ void print_matrix(int**, size_of_matrix *size);
  * main function
  */
 
-void matrix_LU(int ** A, int ** L, int ** U, size_of_matrix size);
+void matrix_LU(int **, int**, int **, unsigned int , unsigned int );
 
 int main (int argc, char * argv[]){
-        
+
 	unsigned int length =0,size=0;
 
         size_of_matrix size_ = {0,0};
@@ -90,8 +90,10 @@ int main (int argc, char * argv[]){
 	prepare_matrix(++data,length, matrix_2D);
         print_matrix(matrix_2D,&size_);
 
-	matrix_LU(matrix_2D, L, U, size_);
+	matrix_LU(matrix_2D, L, U, size_.row, size_.column);
         
+	printf("matrix L\n");
+	print_matrix(L,&size_);
 
 	/*
 	 * Free up the memory
@@ -101,6 +103,7 @@ int main (int argc, char * argv[]){
 	}
 
 	free(matrix_2D);
+
 	return 0;
 }
 
@@ -250,5 +253,41 @@ void print_matrix(int ** matrix_2D, size_of_matrix *size)
 
 }
 
-void matrix_LU(int ** A, int **L, int **U, size_of_matrix size){
+void matrix_LU( int **A, int **L, int **U, unsigned int row, unsigned int column){
+
+	
+	unsigned int iteration;
+	int pivot = 0;
+	int fraction =0;
+	unsigned int row_local = 0;
+	unsigned int column_local = 0;
+
+	for(iteration=0; iteration<(row -1); iteration++)
+	{
+		printf("iteration = %d\n", iteration);
+
+		pivot = A[iteration][iteration];
+		L[iteration][iteration] = 1;
+		
+		printf("fraction calculation\n");
+
+		for(row_local=iteration+1; row_local<row; row_local++)
+		{   
+                        printf("(%d, %d) pivot=%d",row_local,iteration,pivot);
+			
+		        fraction = A[row_local][iteration]/pivot;
+                        L[row_local][iteration] = fraction;
+			
+			printf("\n");
+			for(column_local=iteration+1; column_local < column; column_local++)
+			{
+			   A[row_local][column_local] = A[row_local][column_local] -(fraction*A[row_local][column_local]); 
+			}
+
+			printf("\n");
+
+		}
+		printf("\n");
+
+	}
 }
