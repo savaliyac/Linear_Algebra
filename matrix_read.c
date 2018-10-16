@@ -50,6 +50,8 @@ void print_matrix(int**, size_of_matrix *size);
  * main function
  */
 
+void matrix_LU(int ** A, int ** L, int ** U, size_of_matrix size);
+
 int main (int argc, char * argv[]){
         
 	unsigned int length =0,size=0;
@@ -57,6 +59,8 @@ int main (int argc, char * argv[]){
         size_of_matrix size_ = {0,0};
 
 	int **matrix_2D = NULL;
+	int **L = NULL;
+	int **U = NULL;
 	
 	if(argc == 1){
 		printf("Number of input parameter =1\n");
@@ -73,13 +77,20 @@ int main (int argc, char * argv[]){
 	printf("number of row = %d, number of column = %d\n", size_.row,size_.column);
         
 	
-	matrix_2D = (int **)malloc((size_.row) * sizeof(int*));
+	matrix_2D = (int **)malloc(size_.row* sizeof(int*));
+        L = (int **)malloc(size_.row * sizeof(int*));
+	U = (int **)malloc(size_.row * sizeof(int*));
 
-	for(unsigned int i=0; i<size_.row; i++)
+	for(unsigned int i=0; i<size_.row; i++){
 		matrix_2D[i] = (int *)malloc(sizeof(int)*(size_.column));
+		L[i] = (int *)malloc(sizeof(int)*(size_.column));
+		U[i] = (int *)malloc(sizeof(int)*(size_.column));
+	}
 	
 	prepare_matrix(++data,length, matrix_2D);
         print_matrix(matrix_2D,&size_);
+
+	matrix_LU(matrix_2D, L, U, size_);
         
 
 	/*
@@ -239,4 +250,7 @@ void print_matrix(int ** matrix_2D, size_of_matrix *size)
 		printf("\n");
 	}
 
+}
+
+void matrix_LU(int ** A, int **L, int **U, size_of_matrix size){
 }
